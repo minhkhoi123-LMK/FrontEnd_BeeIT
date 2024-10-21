@@ -1,12 +1,33 @@
 // src/components/Login.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Login: React.FC = () => {
     const navigate = useNavigate(); // Sử dụng useNavigate
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        // Logic xác thực đăng nhập (API)
+        // Giả sử có một hàm xác thực đăng nhập ở đây
+        const isValid = true; // Thay thế bằng logic thực tế
+
+        if (isValid) {
+            navigate('/home'); // Điều hướng đến trang chính sau khi đăng nhập thành công
+        } else {
+            setErrorMessage('Đăng nhập không thành công, vui lòng kiểm tra lại tài khoản và mật khẩu.');
+        }
+    };
 
     const handleRegisterClick = () => {
         navigate('/register'); // Điều hướng đến trang đăng ký
+    };
+
+    const handleForgotPasswordClick = () => {
+        navigate('/forgot-password'); // Điều hướng đến trang quên mật khẩu
     };
 
     return (
@@ -14,8 +35,8 @@ const Login: React.FC = () => {
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <img
                     alt="Your Company"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    className="mx-auto h-10 w-auto"
+                    src="/images/logo-icon.png"
+                    className="mx-auto h-20 w-auto"
                 />
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                     Đăng nhập vào tài khoản của bạn
@@ -23,7 +44,7 @@ const Login: React.FC = () => {
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form action="#" method="POST" className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                         <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                             Tài khoản
@@ -35,7 +56,10 @@ const Login: React.FC = () => {
                                 type="email"
                                 required
                                 autoComplete="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                placeholder="Nhập tài khoản của bạn"
                             />
                         </div>
                     </div>
@@ -46,9 +70,13 @@ const Login: React.FC = () => {
                                 Mật khẩu
                             </label>
                             <div className="text-sm">
-                                <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                                <button
+                                    type="button"
+                                    onClick={handleForgotPasswordClick}
+                                    className="font-semibold text-indigo-600 hover:text-indigo-500"
+                                >
                                     Quên mật khẩu?
-                                </a>
+                                </button>
                             </div>
                         </div>
                         <div className="mt-2">
@@ -58,10 +86,17 @@ const Login: React.FC = () => {
                                 type="password"
                                 required
                                 autoComplete="current-password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                placeholder="Nhập mật khẩu của bạn"
                             />
                         </div>
                     </div>
+
+                    {errorMessage && (
+                        <p className="text-red-500 text-sm text-center">{errorMessage}</p>
+                    )}
 
                     <div>
                         <button

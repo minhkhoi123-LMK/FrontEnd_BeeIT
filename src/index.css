@@ -43,15 +43,41 @@ a:hover {
   padding-top: 1rem !important;
   padding-bottom: 1rem !important;
 }
+
 .w-80 {
   width: 25rem;
 }
+
 .right-0 {
   right: -8px;
+}
+.right-1 {
+  right: -3rem;
 }
 
 @media (min-width: 768px) {
   .md\:w-64 {
     width: 18rem;
   }
+}
+
+.mt-10 {
+  margin-top: 1rem;
+}
+
+.border-2 {
+  border-width: 1px;
+}
+
+.rounded-md {
+  border-radius: 1rem;
+}
+
+.px-2 {
+  padding-left: 1rem;
+  padding-right: 0.5rem;
+}
+
+.pt-20{
+  padding-top: 4.5rem;
 }

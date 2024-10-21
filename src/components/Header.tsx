@@ -11,12 +11,35 @@ const Header = () => {
 
     const navigate = useNavigate(); // Sử dụng useNavigate để điều hướng
 
+    const handleTabClick = (tab: string) => {
+        setActiveTab(tab);
+        switch (tab) {
+            case "Trang chủ":
+                navigate("/home");
+                break;
+            case "Hội thoại":
+                navigate("/conversations");
+                break;
+            case "Lịch":
+                navigate("/calendar");
+                break;
+            case "Công việc":
+                navigate("/taskpage");
+                break;
+            default:
+                navigate("/");
+        }
+    };
+
     const handleLoginClick = () => {
         navigate('/login');// Điều hướng đến trang /login
     };
 
+    const handleHomeClick = () => {
+        navigate("/home"); // Điều hướng về trang chủ
+    };
     const logout = () => {
-        navigate('/');// Điều hướng đến trang chủ
+        navigate('/home');// Điều hướng đến trang chủ
     };
 
 
@@ -24,12 +47,40 @@ const Header = () => {
     const notificationRef = useRef<HTMLDivElement | null>(null);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-    // Danh sách thông báo mẫu
-    const notifications = [
-        { id: 1, text: "Thông báo 1", read: false },
-        { id: 2, text: "Thông báo 2", read: true },
-        { id: 3, text: "Thông báo 3", read: false },
-        { id: 4, text: "Thông báo 4", read: true },
+// Cập nhật kiểu Notification để bao gồm imageUrl
+    type Notification = {
+        id: number;
+        text: string;
+        read: boolean;
+        imageUrl: string; // Thêm thuộc tính imageUrl
+    };
+
+// Danh sách thông báo với các hình ảnh khác nhau
+    const notifications: Notification[] = [
+        {
+            id: 1,
+            text: "Bạn vừa có một thông báo mới",
+            read: false,
+            imageUrl: "https://cdn.vjshop.vn/tin-tuc/cach-chup-anh-phong-canh/cach-chup-anh-phong-canh-dep-15.jpg",
+        },
+        {
+            id: 2,
+            text: "Thông báo 2",
+            read: true,
+            imageUrl: "https://st.quantrimang.com/photos/image/2017/11/07/anh-dep-viet-nam-1.jpg",
+        },
+        {
+            id: 3,
+            text: "Thông báo 3",
+            read: false,
+            imageUrl: "https://via.placeholder.com/40?text=3",
+        },
+        {
+            id: 4,
+            text: "Thông báo 4",
+            read: true,
+            imageUrl: "https://via.placeholder.com/40?text=4",
+        },
     ];
 
     // Lọc thông báo dựa trên trạng thái "chưa đọc"
@@ -70,24 +121,26 @@ const Header = () => {
         <header className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
             <div className="container mx-auto px-4 py-3 flex items-center">
                 {/* Logo và Nav */}
-                <div className="flex items-center space-x-6" style={{ marginLeft: "60px" }}>
+                <div className="flex items-center space-x-6" style={{marginLeft: "60px"}}>
                     <img
-                        src="https://api.logo.com/api/v2/images?logo=logo_e2d05ad5-9426-411a-9096-c234d6880275&format=webp&width=2000&background=transparent&fit=contain&quality=100&u=2024-09-25T10%3A39%3A49.216Z"
+                        src="/images/logo-no-background.png"
                         alt="Logo"
                         className="h-10 w-auto mr-4"
+                        onClick={handleHomeClick} // Thêm sự kiện onClick vào logo
+                        style={{cursor: "pointer"}} // Thêm style để hiển thị con trỏ khi hover vào logo
                     />
                     {/* Tabs: Hiển thị khi màn hình >= 768px */}
                     <nav className="hidden md:block">
                         <ul className="flex space-x-4 mb-0 pl-0">
                             {tabs.map((tab) => (
                                 <li key={tab}>
-                                    <button
+                                <button
                                         className={`px-3 py-2 rounded-md text-sm font-medium ${
                                             activeTab === tab
                                                 ? "bg-blue-500 text-white"
                                                 : "text-gray-700 hover:bg-gray-100"
                                         }`}
-                                        onClick={() => setActiveTab(tab)}
+                                        onClick={() => handleTabClick(tab)}
                                     >
                                         {tab}
                                     </button>
@@ -104,10 +157,10 @@ const Header = () => {
                         <div className="relative">
                             <input
                                 type="text"
-                                placeholder="Search..."
+                                placeholder="Tìm kiếm..."
                                 className="w-64 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
-                            <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                            <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"/>
                         </div>
                     </div>
 
@@ -150,13 +203,22 @@ const Header = () => {
                                         filteredNotifications.map((notification) => (
                                             <div
                                                 key={notification.id}
-                                                className={`px-4 py-3 border-b text-sm ${
+                                                className={`flex items-center px-3 py-2 mb-2 border-gray-200 rounded-lg bg-white ${
                                                     notification.read
                                                         ? "text-gray-500"
                                                         : "text-black font-semibold"
                                                 }`}
                                             >
-                                                {notification.text}
+                                                {/* Hình nhỏ bên trái */}
+                                                <img
+                                                    src={notification.imageUrl}
+                                                    alt="Notification Icon"
+                                                    className="w-8 h-8 rounded-full mr-3"
+                                                />
+                                                {/* Nội dung tóm tắt thông báo */}
+                                                <div className="flex-1">
+                                                    {notification.text}
+                                                </div>
                                             </div>
                                         ))
                                     ) : (
@@ -164,6 +226,7 @@ const Header = () => {
                                             Không có thông báo
                                         </p>
                                     )}
+
                                 </div>
                             </div>
                         )}
