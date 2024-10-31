@@ -40,8 +40,7 @@ const Calendar = () => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto mt-10 p-4 bg-cover bg-center"
-             style={{ backgroundImage: "url('/images/ethereal-09.jpg')" }}>
+        <div className="max-w-4xl mx-auto mt-10 p-4 bg-cover bg-center">
             {/* Điều hướng tháng */}
             <div className="flex justify-between items-center mb-4">
                 <button
@@ -50,7 +49,7 @@ const Calendar = () => {
                 >
                     <FaChevronLeft />
                 </button>
-                <h2 className="text-2xl font-semibold">
+                <h2 className="text-2xl font-semibold text-white">
                     {currentDate.format('MMMM YYYY')}
                 </h2>
                 <button
@@ -62,7 +61,7 @@ const Calendar = () => {
             </div>
 
             {/* Tên các ngày trong tuần */}
-            <div className="grid grid-cols-7 gap-4 text-center font-semibold text-gray-600">
+            <div className="grid grid-cols-7 gap-4 text-center font-semibold text-white">
                 {daysOfWeek.map((day) => (
                     <div key={day}>{day}</div>
                 ))}

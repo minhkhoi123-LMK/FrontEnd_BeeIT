@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBriefcase, faCalendar, faUsers, faChevronLeft, faChevronRight, faClipboardList } from "@fortawesome/free-solid-svg-icons";
+import {
+    faBriefcase,
+    faCalendar,
+    faUsers,
+    faChevronLeft,
+    faChevronRight,
+    faClipboardList,
+    faTasks,
+    faChevronDown,
+    faChevronUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 interface Event {
@@ -15,16 +25,16 @@ interface MenuProps {
 
 const Menu: React.FC<MenuProps> = ({ isMenuVisible, toggleMenu }) => {
     const [selectedItem, setSelectedItem] = useState<string | null>(null);
+    const [isTaskDropdownOpen, setIsTaskDropdownOpen] = useState<boolean>(false);
+    const [isGroupDropdownOpen, setIsGroupDropdownOpen] = useState<boolean>(false);
     const [events, setEvents] = useState<Event[]>([]);
     const navigate = useNavigate();
 
-    // Giả lập lấy danh sách sự kiện mà người dùng đã tham gia
     useEffect(() => {
-        // Thay bằng API thực tế để lấy danh sách sự kiện của người dùng
         const fetchEvents = async () => {
             const userEvents = [
-                { id: 1, name: "Sự kiện 1" },
-                { id: 2, name: "Sự kiện 2" },
+                { id: 1, name: "Event 1" },
+                { id: 2, name: "Event 2" },
             ];
             setEvents(userEvents);
         };
@@ -38,16 +48,22 @@ const Menu: React.FC<MenuProps> = ({ isMenuVisible, toggleMenu }) => {
     };
 
     const handleEventClick = (eventId: number) => {
-        // Điều hướng đến trang Conversations với id sự kiện
-        navigate(`/conversations1`);
-       /* navigate(`/conversations/event/${eventId}`);*/
+        navigate(`/conversations/event/${eventId}`);
+    };
+
+    const toggleTaskDropdown = () => {
+        setIsTaskDropdownOpen(!isTaskDropdownOpen);
+    };
+
+    const toggleGroupDropdown = () => {
+        setIsGroupDropdownOpen(!isGroupDropdownOpen);
     };
 
     return (
         <menu>
             <button
                 onClick={toggleMenu}
-                className={`fixed z-50 p-2 bg-gray-100 shadow-md border border-gray-300 transition-transform duration-300 rounded-full ${
+                className={`fixed z-50 p-2 bg-white shadow-lg border border-gray-300 rounded-full transition-transform duration-300 ${
                     isMenuVisible ? "left-64" : "left-0"
                 }`}
                 style={{
@@ -65,44 +81,66 @@ const Menu: React.FC<MenuProps> = ({ isMenuVisible, toggleMenu }) => {
 
             {isMenuVisible && (
                 <div
-                    className="fixed top-20 left-0 z-40 w-full md:w-64 bg-gray-100 shadow-md border-r border-gray-300 overflow-y-auto"
-                    style={{ height: "calc(-4rem + 100vh)" }}
+                    className="fixed bg-cover bg-center top-20 left-0 z-40 w-full md:w-64 bg-white shadow-md border-r border-gray-300 overflow-y-auto"
+                    style={{ height: "calc(100vh - 5rem)", backgroundImage: "url('/images/gauze-08.jpg')" }}
                 >
-                    <ul className="list-none m-0 p-0">
+                    <ul className="list-none p-4 space-y-2 text-white">
+                        <MenuItem
+                            title="Tác vụ và Dự án"
+                            icon={faTasks}
+                            isSelected={selectedItem === "Tác vụ và Dự án"}
+                            onClick={toggleTaskDropdown}
+                        />
+                        {isTaskDropdownOpen && (
+                            <ul className="pl-6 space-y-2">
+                                <li>
+                                    <button
+                                        className="flex items-center w-full py-2 px-3 hover:bg-gray-500 text-left rounded-lg"
+                                        onClick={() => handleItemClick("Task", "/tasks")}
+                                    >
+                                        <span className="text-white">Nhiệm vụ</span>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        className="flex items-center w-full py-2 px-3 hover:bg-gray-500 text-left rounded-lg"
+                                        onClick={() => handleItemClick("Project", "/project")}
+                                    >
+                                        <span className="text-white">Dự án</span>
+                                    </button>
+                                </li>
+                            </ul>
+                        )}
+
                         <MenuItem
                             title="Công việc"
                             icon={faBriefcase}
-                            note="Quản lý công việc hàng ngày"
                             isSelected={selectedItem === "Công việc"}
                             onClick={() => handleItemClick("Công việc", "/planning")}
                         />
                         <MenuItem
                             title="Sự kiện"
                             icon={faCalendar}
-                            note="Xem lịch sự kiện sắp tới"
                             isSelected={selectedItem === "Sự kiện"}
                             onClick={() => handleItemClick("Sự kiện", "/calendar")}
                         />
                         <MenuItem
                             title="Nhóm"
                             icon={faUsers}
-                            note="Danh sách các sự kiện tham gia"
                             isSelected={selectedItem === "Nhóm"}
-                            onClick={() => setSelectedItem("Nhóm")} // Mở danh sách sự kiện
+                            onClick={toggleGroupDropdown}
                         />
 
-                        {/* Hiển thị danh sách sự kiện khi chọn "Nhóm" */}
-                        {selectedItem === "Nhóm" && (
-                            <ul className="pl-4">
+                        {isGroupDropdownOpen && (
+                            <ul className="pl-6 space-y-2">
                                 {events.map((event) => (
                                     <li key={event.id}>
                                         <button
-                                            className="py-2 px-4 text-left w-full hover:bg-gray-200"
+                                            className="flex items-center w-full py-2 px-3 hover:bg-gray-500 text-left rounded-lg"
                                             onClick={() => handleEventClick(event.id)}
                                         >
-                                            {/* Icon sự kiện */}
-                                            <FontAwesomeIcon icon={faClipboardList} className="text-gray-600 mr-2" />
-                                            {event.name}
+                                            <FontAwesomeIcon icon={faClipboardList} className="mr-2 text-white" />
+                                            <span className="text-white">{event.name}</span>
                                         </button>
                                     </li>
                                 ))}
@@ -118,29 +156,25 @@ const Menu: React.FC<MenuProps> = ({ isMenuVisible, toggleMenu }) => {
 const MenuItem = ({
                       title,
                       icon,
-                      note,
                       isSelected,
                       onClick,
                   }: {
     title: string;
     icon: any;
-    note: string;
     isSelected: boolean;
     onClick: () => void;
 }) => (
     <li
-        className={`py-4 px-6 transition duration-300 ease-in-out border-b border-gray-300 cursor-pointer ${
-            isSelected ? "bg-blue-500 text-white" : "hover:bg-gray-200"
+        className={`py-3 px-4 flex items-center space-x-4 rounded-lg cursor-pointer transition-colors duration-200 ${
+            isSelected ? "bg-blue-500 text-white" : "hover:bg-gray-500 text-white"
         }`}
         onClick={onClick}
     >
-        <div className="flex items-center">
-            <FontAwesomeIcon icon={icon} className={`text-lg mr-4 ${isSelected ? "text-white" : "text-gray-600"}`} />
-            <div>
-                <h5 className={`text-lg font-semibold ${isSelected ? "text-white" : "text-gray-800"}`}>{title}</h5>
-                <p className={`text-sm ${isSelected ? "text-white" : "text-gray-600"}`}>{note}</p>
-            </div>
-        </div>
+        <FontAwesomeIcon icon={icon} className={`${isSelected ? "text-white" : "text-gray-300"}`} />
+        <span>{title}</span>
+        {["Tác vụ và Dự án", "Nhóm"].includes(title) && (
+            <FontAwesomeIcon icon={isSelected ? faChevronUp : faChevronDown} className="ml-auto text-white" />
+        )}
     </li>
 );
 

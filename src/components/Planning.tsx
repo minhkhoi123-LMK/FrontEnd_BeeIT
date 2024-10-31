@@ -203,8 +203,7 @@ const Planning: React.FC = () => {
     }, [currentListId]);
 
     return (
-        <div className="p-4 min-h-screen bg-cover bg-center"
-             style={{ backgroundImage: "url('/images/ethereal-06.jpg')" }}>
+        <div className="p-4 min-h-screen bg-cover bg-center">
             <h1 className="text-3xl font-bold mb-4">Trình lập kế hoạch</h1>
             <DragDropContext onDragEnd={handleDragEnd}>
                 <div className="flex overflow-x-auto space-x-4">

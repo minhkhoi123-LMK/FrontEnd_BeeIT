@@ -42,7 +42,6 @@ const Header = () => {
         navigate('/home');// Điều hướng đến trang chủ
     };
 
-
     // Tạo ref để theo dõi div của thông báo và dropdown, khai báo kiểu HTMLDivElement | null
     const notificationRef = useRef<HTMLDivElement | null>(null);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -88,7 +87,7 @@ const Header = () => {
         ? notifications.filter((notification) => !notification.read)
         : notifications;
 
-    const tabs = ["Trang chủ", "Hội thoại", "Lịch", "Công việc"];
+    const tabs = ["Các dự án","Gần đây","Công việc", "Lịch", "+Tạo tác vụ nhanh"];
 
     // Hook để đóng dropdown hoặc thông báo khi click ra ngoài
     useEffect(() => {
