@@ -25,10 +25,31 @@ const initialLists: TaskList[] = [
     { id: "list-6", title: "Hạn trong 2 tuần", tasks: [] },
 ];
 
+// Hiển thị chi tiết nhiệm vụ
+const TaskDetailModal: React.FC<{ task: TaskPage | null; onClose: () => void }> = ({ task, onClose }) => {
+    if (!task) return null; // Không kết xuất nếu không có nhiệm vụ
+
+    return (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white p-4 rounded shadow-lg">
+                <h2 className="text-lg font-bold mb-2">{task.content}</h2>
+                <p><strong>Tiến độ:</strong> In Progress</p>
+                <p><strong>Thời gian được tạo ra:</strong> {new Date().toLocaleString()}</p>
+                <p><strong>Bắt đầu:</strong> TBD</p>
+                <p><strong>Kết thúc:</strong> TBD</p>
+                <p><strong>Được tạo bởi:</strong> User A</p>
+                <p><strong>Người được phân công:</strong> User B</p>
+                <button onClick={onClose} className="mt-4 bg-gray-300 px-4 py-2 rounded">Đóng</button>
+            </div>
+        </div>
+    );
+};
+
 const TaskPage: React.FC = () => {
     const [lists, setLists] = useState<TaskList[]>(initialLists);
     const [newTaskContent, setNewTaskContent] = useState("");
     const [currentListId, setCurrentListId] = useState<string | null>(null);
+    const [selectedTask, setSelectedTask] = useState<TaskPage | null>(null); // State to track the selected task for the modal
     const taskInputRef = useRef<HTMLInputElement | null>(null);
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -85,6 +106,14 @@ const TaskPage: React.FC = () => {
         setNewTaskContent("");
     };
 
+    const openTaskDetails = (task: TaskPage) => {
+        setSelectedTask(task); // Set the selected task for the modal
+    };
+
+    const closeTaskDetails = () => {
+        setSelectedTask(null); // Close the modal
+    };
+
     useEffect(() => {
         if (currentListId && taskInputRef.current) {
             taskInputRef.current.focus();
@@ -112,8 +141,7 @@ const TaskPage: React.FC = () => {
     };
 
     return (
-        <div className="p-4 min-h-screen bg-cover bg-center"
-             style={{ backgroundImage: "url('/images/gauze-08.jpg')" }}>
+        <div className="p-4 min-h-screen">
             <div className="flex items-center mb-4">
                 <h1 className="text-2xl font-bold text-white">Task Management</h1>
                 <div className="relative ml-4 flex items-center">
@@ -128,9 +156,9 @@ const TaskPage: React.FC = () => {
                         placeholder="Tìm kiếm..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-5 pr-2 py-2 rounded border border-gray-300 ml-4 w-[250px]" // Increased width here
+                        className="pl-5 pr-2 py-2 rounded border border-gray-300 ml-4 w-[250px]"
                     />
-                    <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"/>
+                    <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 </div>
             </div>
             <DragDropContext onDragEnd={handleDragEnd}>
@@ -143,22 +171,18 @@ const TaskPage: React.FC = () => {
                                     {...provided.droppableProps}
                                     ref={provided.innerRef}
                                 >
-                                    {/* Apply dynamic background color and tag effect to the title */}
                                     <h2 className={`text-sm font-semibold mb-2 text-white p-2 rounded-md ${getTitleBgColor(list.title)}`}>
                                         {list.title}
                                     </h2>
                                     {list.tasks.map((task, index) => (
-                                        <Draggable
-                                            draggableId={task.id}
-                                            index={index}
-                                            key={task.id}
-                                        >
+                                        <Draggable draggableId={task.id} index={index} key={task.id}>
                                             {(provided) => (
                                                 <div
-                                                    className="bg-gray-100 p-2 mb-2 rounded shadow"
+                                                    className="bg-gray-100 p-2 mb-2 rounded shadow cursor-pointer" // Added cursor pointer
                                                     ref={provided.innerRef}
                                                     {...provided.draggableProps}
                                                     {...provided.dragHandleProps}
+                                                    onClick={() => openTaskDetails(task)} // Open the modal on click
                                                 >
                                                     {task.content}
                                                 </div>
@@ -206,6 +230,8 @@ const TaskPage: React.FC = () => {
                     ))}
                 </div>
             </DragDropContext>
+            {/* Modal for displaying task details */}
+            <TaskDetailModal task={selectedTask} onClose={closeTaskDetails} />
         </div>
     );
 };

@@ -38,12 +38,13 @@ const ForgotPassword: React.FC = () => {
                     src="/images/logo-icon.png"
                     className="mx-auto h-20 w-auto"
                 />
-                <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
                     Quên mật khẩu?
                 </h2>
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                <div className="bg-white bg-opacity-70 shadow-lg border border-gray-300 rounded-lg p-6">
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                         <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
@@ -88,6 +89,7 @@ const ForgotPassword: React.FC = () => {
                         Đăng nhập
                     </button>
                 </p>
+            </div>
             </div>
         </div>
     );

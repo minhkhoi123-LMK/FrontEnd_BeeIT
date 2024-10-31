@@ -14,12 +14,16 @@ import Calendar from './components/Calendar';
 import TimesLive from './components/TimesLive';
 import Planning from './components/Planning';
 import TaskPage from './components/TaskPage';
+import Project from './components/Project';
+import Tasks from './components/Tasks';
+import CreateProjects from './components/CreateProjects';
+import CreateTasks from './components/CreateTasks';
 import ForgotPassword from './components/ForgotPassword';
 
 // Component để điều kiện hiển thị Menu
 const Layout: React.FC = () => {
     const location = useLocation(); // Lấy thông tin vị trí hiện tại
-    const [isMenuVisible, setIsMenuVisible] = useState(true); // Quản lý trạng thái hiển thị của menu
+    const [isMenuVisible, setIsMenuVisible] = useState(false); // Quản lý trạng thái hiển thị của menu
 
     // Hàm toggle để ẩn/hiện menu
     const toggleMenu = () => {
@@ -30,7 +34,8 @@ const Layout: React.FC = () => {
     const noMenuPaths = ['/login', '/register', '/forgot-password'];
 
     return (
-        <div className="flex">
+        <div className="flex bg-cover bg-center"
+             style={{ backgroundImage: "url('/images/gauze-08.jpg')" }}>
             {/* Hiển thị Menu có điều kiện dựa trên đường dẫn hiện tại */}
             {!noMenuPaths.includes(location.pathname) && (
                 <Menu isMenuVisible={isMenuVisible} toggleMenu={toggleMenu} />
@@ -54,6 +59,10 @@ const Layout: React.FC = () => {
                         <Route path="/timeslive" element={<TimesLive />} />
                         <Route path="/taskpage" element={<TaskPage />} />
                         <Route path="/planning" element={<Planning />} />
+                        <Route path="/project" element={<Project />} />
+                        <Route path="/createProjects" element={<CreateProjects />} />
+                        <Route path="/createTasks" element={<CreateTasks />} />
+                        <Route path="/tasks" element={<Tasks />} />
                     </Routes>
                 </div>
             </div>

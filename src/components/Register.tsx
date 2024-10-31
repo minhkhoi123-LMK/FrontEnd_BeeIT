@@ -16,94 +16,100 @@ const Register: React.FC = () => {
                 <img
                     alt="Your Company"
                     src="/images/logo-icon.png"
-                    className="mx-auto h-10 w-auto"
+                    className="mx-auto h-20 w-auto"
                 />
-                <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
                     Tạo tài khoản của bạn
                 </h2>
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form action="#" method="POST" className="space-y-6">
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                            Tài khoản
-                        </label>
-                        <div className="mt-2">
-                            <input
-                                id="text"
-                                name="text"
-                                type="text"
-                                required
-                                autoComplete="text"
-                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            />
+                <div className="bg-white bg-opacity-70 shadow-lg border border-gray-300 rounded-lg p-6">
+                    <form action="#" method="POST" className="space-y-6">
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                                Tài khoản
+                            </label>
+                            <div className="mt-2">
+                                <input
+                                    id="text"
+                                    name="text"
+                                    type="text"
+                                    required
+                                    autoComplete="text"
+                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    placeholder="Nhập tên tài khoản"
+                                />
+                            </div>
                         </div>
-                    </div>
 
-                    <div>
-                        <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                            Mật khẩu
-                        </label>
-                        <div className="mt-2">
-                            <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                required
-                                autoComplete="new-password"
-                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            />
+                        <div>
+                            <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                                Mật khẩu
+                            </label>
+                            <div className="mt-2">
+                                <input
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    required
+                                    autoComplete="new-password"
+                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    placeholder="Nhập mật khẩu"
+                                />
+                            </div>
                         </div>
-                    </div>
 
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                            Họ tên
-                        </label>
-                        <div className="mt-2">
-                            <input
-                                id="text"
-                                name="text"
-                                type="text"
-                                required
-                                autoComplete="text"
-                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            />
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                                Họ tên
+                            </label>
+                            <div className="mt-2">
+                                <input
+                                    id="text"
+                                    name="text"
+                                    type="text"
+                                    required
+                                    autoComplete="text"
+                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    placeholder="Nhập họ tên"
+                                />
+                            </div>
                         </div>
-                    </div>
 
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                            Email
-                        </label>
-                        <div className="mt-2">
-                            <input
-                                id="email"
-                                name="email"
-                                type="email"
-                                required
-                                autoComplete="email"
-                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            />
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                                Email
+                            </label>
+                            <div className="mt-2">
+                                <input
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    required
+                                    autoComplete="email"
+                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    placeholder="@gmail.com"
+                                />
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <button
-                            type="submit"
-                            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        >
-                            Đăng ký
+                        <div>
+                            <button
+                                type="submit"
+                                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            >
+                                Đăng ký
+                            </button>
+                        </div>
+                    </form>
+                    <p className="mt-10 text-center text-sm text-gray-500">
+                        Đã có tài khoản?{' '}
+                        <button onClick={LoginClick}
+                                className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                            Đăng nhập
                         </button>
-                    </div>
-                </form>
-                <p className="mt-10 text-center text-sm text-gray-500">
-                    Đã có tài khoản?{' '}
-                    <button onClick={LoginClick}
-                            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                        Đăng nhập
-                    </button>
-                </p>
+                    </p>
+                </div>
             </div>
         </div>
     );
