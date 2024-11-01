@@ -39,7 +39,9 @@ const Header = () => {
         navigate("/home"); // Điều hướng về trang chủ
     };
     const logout = () => {
-        navigate('/home');// Điều hướng đến trang chủ
+        localStorage.removeItem('token');
+        localStorage.removeItem('accountid');
+        navigate('/login');// Điều hướng đến trang chủ
     };
 
     // Tạo ref để theo dõi div của thông báo và dropdown, khai báo kiểu HTMLDivElement | null

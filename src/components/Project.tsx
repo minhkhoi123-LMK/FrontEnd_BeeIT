@@ -1,76 +1,91 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom'; // Import useNavigate để điều hướng
-
-interface Project {
-    id: string;
-    name: string;
-    progress: string;
-    members: string;
-    role: string;
-    startDate: string;
-    endDate: string;
-    createdDate: string;
-    memberCount: number;
-}
-
-const projectData: Project[] = [
-    {
-        id: "1",
-        name: "Thiết kế giao diện",
-        progress: "50%",
-        members: "Nguyễn Văn A, Trần Văn B",
-        role: "Thiết kế",
-        startDate: "2024-10-01",
-        endDate: "2024-10-30",
-        createdDate: "2024-10-01",
-        memberCount: 2,
-    },
-    {
-        id: "2",
-        name: "Viết tài liệu kỹ thuật",
-        progress: "30%",
-        members: "Lê Thị C, Phạm Văn D",
-        role: "Kỹ thuật",
-        startDate: "2024-09-15",
-        endDate: "2024-10-25",
-        createdDate: "2024-09-15",
-        memberCount: 2,
-    },
-];
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Project: React.FC = () => {
+    const [projects, setProjects] = useState<any[]>([]);
     const [selectedTasks, setSelectedTasks] = useState<string[]>([]);
     const [recordsPerPage, setRecordsPerPage] = useState<number>(5);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [searchTerm, setSearchTerm] = useState("");
-    const navigate = useNavigate(); // Sử dụng useNavigate để điều hướng
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState<boolean>(true);
+    
+    const navigate = useNavigate();
 
-    const handlecreateProjectsClick = () => {
-        navigate('/createProjects');// Điều hướng đến trang /login
-    };
+    useEffect(() => {
+        const fetchProjects = async () => {
+            setLoading(true);
+            setError(""); 
+            try {
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    setError("Token không tồn tại");
+                    return;
+                }
+                
+                const response = await axios.get("http://localhost:8080/api/project/findProjectsByOwner", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
 
-    const handleCheckboxChange = (taskId: string) => {
-        setSelectedTasks((prevSelected) => {
-            if (prevSelected.includes(taskId)) {
-                return prevSelected.filter(id => id !== taskId);
-            } else {
-                return [...prevSelected, taskId];
+                if (response.status === 200) {
+                    setProjects(response.data);
+                } else {
+                    setError("Không thể lấy dữ liệu");
+                }
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    if (error.response) {
+                        setError("Lỗi: " + (error.response.data.message || "Lỗi không xác định"));
+                    } else {
+                        setError("Lỗi không kết nối được với máy chủ");
+                    }
+                } else {
+                    setError("Lỗi: " + (error as any).message);
+                }
+            } finally {
+                setLoading(false);
             }
-        });
+        };
+
+        fetchProjects();
+    }, []);
+
+    // Search and Pagination Logic
+    const filteredProjects = projects.filter(project =>
+        project.projectName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const totalTasks = filteredProjects.length;
+    const totalPages = Math.ceil(totalTasks / recordsPerPage);
+    const paginatedProjects = filteredProjects.slice(
+        (currentPage - 1) * recordsPerPage,
+        currentPage * recordsPerPage
+    );
+
+    const handleCreateProjectsClick = () => {
+        navigate('/create-project');
     };
 
-    const totalTasks = projectData.length;
+    const handlePageChange = (newPage: number) => {
+        if (newPage > 0 && newPage <= totalPages) {
+            setCurrentPage(newPage);
+        }
+    };
+
     const selectedCount = selectedTasks.length;
 
     return (
-        <div className="p-4 min-h-screen bg-cover bg-center ">
+        <div className="p-4 min-h-screen bg-cover bg-center">
             <div className="flex items-center mb-4">
                 <h1 className="text-2xl font-bold text-white">Dự án của tôi</h1>
                 <div className="relative ml-4 flex items-center">
-                    <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded"
-                        onClick={handlecreateProjectsClick}
-                    >
+                    <button 
+                        className="bg-blue-500 text-white px-4 py-2 rounded" 
+                        onClick={handleCreateProjectsClick}>
                         Tạo
                     </button>
                     <input
@@ -80,71 +95,95 @@ const Project: React.FC = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="pl-5 pr-2 py-2 rounded border border-gray-300 ml-4 w-[650px]"
                     />
-                    <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"/>
+                    <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 </div>
             </div>
-            <div className="max-w-full border rounded-md bg-white ">
-                <div className="">
+
+            {loading ? (
+                <div className="text-white">Đang tải dữ liệu...</div>
+            ) : error ? (
+                <div className="text-red-500">{error}</div>
+            ) : (
+                <div className="max-w-full border rounded-md bg-white">
                     <table className="bg-white min-w-[1200px] w-full rounded-md">
                         <thead>
-                        <tr>
-                            <th className="p-2 text-left w-[50px]">
-                                <input type="checkbox"/>
-                            </th>
-                            <th className="p-2 text-left w-[100px]">ID</th>
-                            <th className="p-2 text-left w-[200px]">Tên</th>
-                            <th className="p-2 text-left w-[150px]">Tiến độ</th>
-                            <th className="p-2 text-left w-[200px]">Thành viên</th>
-                            <th className="p-2 text-left w-[150px]">Vai trò</th>
-                            <th className="p-2 text-left w-[150px]">Ngày bắt đầu</th>
-                            <th className="p-2 text-left w-[150px]">Ngày kết thúc</th>
-                            <th className="p-2 text-left w-[150px]">Thời gian tạo</th>
-                            <th className="p-2 text-left w-[150px]">Số lượng thành viên</th>
-                        </tr>
+                            <tr>
+                                <th className="p-2 text-left w-[50px]">
+                                    <input type="checkbox" />
+                                </th>
+                                <th className="p-2 text-left w-[100px]">ID</th>
+                                <th className="p-2 text-left w-[200px]">Tên</th>
+                                <th className="p-2 text-left w-[200px]">Mô tả</th>
+                                <th className="p-2 text-left w-[150px]">Ngày bắt đầu</th>
+                                <th className="p-2 text-left w-[150px]">Ngày kết thúc</th>
+                                <th className="p-2 text-left w-[150px]">Trạng thái</th>
+                                <th className="p-2 text-left w-[150px]">Chủ sở hữu</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {projectData.map((task) => (
-                            <tr key={task.id} className="border-b">
-                                <td className="p-2">
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedTasks.includes(task.id)}
-                                        onChange={() => handleCheckboxChange(task.id)}
-                                    />
-                                </td>
-                                <td className="p-2">{task.id}</td>
-                                <td className="p-2">{task.name}</td>
-                                <td className="p-2">{task.progress}</td>
-                                <td className="p-2">{task.members}</td>
-                                <td className="p-2">{task.role}</td>
-                                <td className="p-2">{task.startDate}</td>
-                                <td className="p-2">{task.endDate}</td>
-                                <td className="p-2">{task.createdDate}</td>
-                                <td className="p-2">{task.memberCount}</td>
-                            </tr>
-                        ))}
+                            {paginatedProjects.map((project) => (
+                                <tr key={project.projectID} className="border-b">
+                                    <td className="p-2">
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedTasks.includes(project.projectID.toString())}
+                                            onChange={() => {
+                                                if (selectedTasks.includes(project.projectID.toString())) {
+                                                    setSelectedTasks(selectedTasks.filter(id => id !== project.projectID.toString()));
+                                                } else {
+                                                    setSelectedTasks([...selectedTasks, project.projectID.toString()]);
+                                                }
+                                            }}
+                                        />
+                                    </td>
+                                    <td className="p-2">{project.projectID}</td>
+                                    <td className="p-2">{project.projectName}</td>
+                                    <td className="p-2">{project.description}</td>
+                                    <td className="p-2">{new Date(project.startDate).toLocaleDateString()}</td>
+                                    <td className="p-2">{new Date(project.endDate).toLocaleDateString()}</td>
+                                    <td className="p-2">{project.status}</td>
+                                    <td className="p-2">{project.owner.username}</td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
-                </div>
-                <div className="flex justify-between items-center mt-4">
-                    <div>
-                        <span>{selectedCount} mục đã chọn / {totalTasks} tổng số mục</span>
+                    <div className="flex justify-between items-center mt-4">
+                        <div>
+                            <span>{selectedCount} mục đã chọn / {totalTasks} tổng số mục</span>
+                        </div>
+                        <div className="flex items-center">
+                            <label className="mr-2">Hiển thị:</label>
+                            <select
+                                value={recordsPerPage}
+                                onChange={(e) => setRecordsPerPage(Number(e.target.value))}
+                                className="border rounded p-1"
+                            >
+                                <option value={5}>5</option>
+                                <option value={10}>10</option>
+                                <option value={15}>15</option>
+                            </select>
+                            <span className="ml-2">bản ghi mỗi trang</span>
+                        </div>
                     </div>
-                    <div className="flex items-center">
-                        <label className="mr-2">Hiển thị:</label>
-                        <select
-                            value={recordsPerPage}
-                            onChange={(e) => setRecordsPerPage(Number(e.target.value))}
-                            className="border rounded p-1"
+                    <div className="flex justify-center mt-4">
+                        <button 
+                            className="px-4 py-2 mx-1 bg-gray-300 rounded" 
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
                         >
-                            <option value={5}>5</option>
-                            <option value={10}>10</option>
-                            <option value={15}>15</option>
-                        </select>
-                        <span className="ml-2">bản ghi mỗi trang</span>
+                            Trang trước
+                        </button>
+                        <span>Trang {currentPage} / {totalPages}</span>
+                        <button 
+                            className="px-4 py-2 mx-1 bg-gray-300 rounded" 
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                        >
+                            Trang sau
+                        </button>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };

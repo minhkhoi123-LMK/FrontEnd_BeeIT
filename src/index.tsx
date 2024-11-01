@@ -47,7 +47,7 @@ const Layout: React.FC = () => {
                 <Header />
                 <div className="flex flex-col h-screen pt-20 p-4">
                     <Routes>
-                        <Route path="/" element={<Navigate to="/home" />} /> {/* Chuyển hướng từ / đến /home */}
+                        <Route path="/" element={<Navigate to="/login" />} /> {/* Chuyển hướng từ / đến /home */}
                         <Route path="/home" element={<Home />} /> {/* Trang mặc định */}
                         <Route path="/details" element={<Details />} />
                         <Route path="/login" element={<Login />} />
