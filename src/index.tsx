@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom'; // Nhập Navigate từ react-router-dom
 import './index.css';
 import Header from './components/Header';
-import Menu from './components/Menu';
+import Sidebar from './components/Sidebar';
 import Home from './components/Home';
 import Login from './components/Login';
 import Details from './components/Details';
@@ -16,40 +16,35 @@ import TimesLive from './components/TimesLive';
 import Planning from './components/Planning';
 import TaskPage from './components/TaskPage';
 import Project from './components/Project';
+import ProjectList from './components/ProjectList';
 import Works from './components/Works';
 import CreateProjects from './components/CreateProjects';
 import CreateTasks from './components/CreateTasks';
 import ForgotPassword from './components/ForgotPassword';
+import ProjectPage from './components/ProjectPage';
+import Dashboard from './components/Dashboard';
 
 // Component để điều kiện hiển thị Menu
 const Layout: React.FC = () => {
     const location = useLocation(); // Lấy thông tin vị trí hiện tại
-    const [isMenuVisible, setIsMenuVisible] = useState(false); // Quản lý trạng thái hiển thị của menu
 
-    // Hàm toggle để ẩn/hiện menu
-    const toggleMenu = () => {
-        setIsMenuVisible(!isMenuVisible);
-    };
-
-    // Định nghĩa các đường dẫn mà Menu không nên hiển thị
+    // Định nghĩa các đường dẫn mà Sidebar và Header không nên hiển thị
     const noMenuPaths = ['/login', '/register', '/forgot-password'];
 
+    // Kiểm tra nếu đường dẫn hiện tại nằm trong danh sách `noMenuPaths`
+    const isNoMenuPath = noMenuPaths.includes(location.pathname);
+
     return (
-        <div className="flex bg-cover bg-center"
-             style={{ backgroundImage: "url('/images/gauze-08.jpg')" }}>
-            {/* Hiển thị Menu có điều kiện dựa trên đường dẫn hiện tại */}
-            {!noMenuPaths.includes(location.pathname) && (
-                <Menu isMenuVisible={isMenuVisible} toggleMenu={toggleMenu} />
-            )}
-            {/* Phần nội dung chính */}
-            <div
-                className={`flex-grow transition-all duration-300 ${isMenuVisible ? 'ml-64' : 'ml-0'}`}
-            >
-                <Header />
-                <div className="flex flex-col h-screen pt-20 p-4">
+        <div className="flex h-screen bg-gray-50">
+            {/* Ẩn Sidebar và Header nếu là đường dẫn trong `noMenuPaths` */}
+            {!isNoMenuPath && <Sidebar />}
+            <div className="flex-1 flex flex-col overflow-hidden">
+                {!isNoMenuPath && <Header />}
+                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gradient-to-br from-purple-900 via-blue-800 to-orange-700">
                     <Routes>
-                        <Route path="/" element={<Navigate to="/home" />} /> {/* Chuyển hướng từ / đến /home */}
-                        <Route path="/home" element={<Home />} /> {/* Trang mặc định */}
+                        <Route path="/" element={<Navigate to="/home" />} /> {/*Chuyển hướng đến home */}
+                        <Route path="/home" element={<Home />} /> {/*Trang mặc định */}
+                        <Route path="/Dashboard" element={<Dashboard />} />
                         <Route path="/details" element={<Details />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
@@ -65,8 +60,10 @@ const Layout: React.FC = () => {
                         <Route path="/createTasks" element={<CreateTasks />} />
                         <Route path="/works" element={<Works />} />
                         <Route path="/dailyView/:date" element={<DailyView />} />
+                        <Route path="/projectPage" element={<ProjectPage />} />
+                        <Route path="/ProjectList" element={<ProjectList />} />
                     </Routes>
-                </div>
+                </main>
             </div>
         </div>
     );

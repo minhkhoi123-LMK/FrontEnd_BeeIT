@@ -68,7 +68,7 @@ const Menu: React.FC<MenuProps> = ({ isMenuVisible, toggleMenu }) => {
                 }`}
                 style={{
                     top: "5.8rem",
-                    transform: isMenuVisible ? "translateX(-50%)" : "translateX(0)",
+                    transform: isMenuVisible ? "translateX(-100%)" : "translateX(0)",
                     width: "30px",
                     height: "30px",
                     display: "flex",
@@ -81,8 +81,8 @@ const Menu: React.FC<MenuProps> = ({ isMenuVisible, toggleMenu }) => {
 
             {isMenuVisible && (
                 <div
-                    className="fixed bg-cover bg-center top-20 left-0 z-40 w-full md:w-64 bg-white shadow-md border-r border-gray-300 overflow-y-auto"
-                    style={{ height: "calc(100vh - 5rem)", backgroundImage: "url('/images/gauze-08.jpg')" }}
+                    className="fixed bg-cover bg-center top-20 left-0 z-40 w-[240px] shadow-md border-r border-gray-300 overflow-y-auto"
+                    style={{ height: "calc(100vh - 4rem)"}}
                 >
                     <ul className="list-none p-4 space-y-2 text-white">
                         <MenuItem
@@ -96,7 +96,7 @@ const Menu: React.FC<MenuProps> = ({ isMenuVisible, toggleMenu }) => {
                                 <li>
                                     <button
                                         className="flex items-center w-full py-2 px-3 hover:bg-gray-500 text-left rounded-lg"
-                                        onClick={() => handleItemClick("Task", "/tasks")}
+                                        onClick={() => handleItemClick("Works", "/works")}
                                     >
                                         <span className="text-white">Nhiệm vụ</span>
                                     </button>
@@ -116,7 +116,7 @@ const Menu: React.FC<MenuProps> = ({ isMenuVisible, toggleMenu }) => {
                             title="Công việc"
                             icon={faBriefcase}
                             isSelected={selectedItem === "Công việc"}
-                            onClick={() => handleItemClick("Công việc", "/planning")}
+                            onClick={() => handleItemClick("Công việc", "/taskpage")}
                         />
                         <MenuItem
                             title="Sự kiện"

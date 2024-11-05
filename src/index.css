@@ -7,7 +7,7 @@ body {
   margin: 0;
   overflow: hidden; /* Ẩn thanh cuộn */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  background-color: #f4f4f4;
+  background: linear-gradient(360deg, #42327B, #603C79, #714173, #874163, #9B4254, #AF4B59, #B1495A, #C2505A, #DD615A, #E3675A, #EC8460, #F0A27B,#F6AD8D);
 }
 
 #root {
@@ -76,7 +76,7 @@ a:hover {
 
 @media (min-width: 768px) {
   .md\:w-64 {
-    width: 18rem;
+    width: 15rem;
   }
 }
 

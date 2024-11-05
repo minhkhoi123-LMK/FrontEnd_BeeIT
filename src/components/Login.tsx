@@ -3,19 +3,34 @@ import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
-    const [email, setEmail] = useState('');
+    const [username, setusername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const isValid = true; // Thay thế bằng logic thực tế
+        try {
+            const response = await fetch('http://localhost:8080/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
 
-        if (isValid) {
-            navigate('/home');
-        } else {
-            setErrorMessage('Đăng nhập không thành công, vui lòng kiểm tra lại tài khoản và mật khẩu.');
+            if (response.ok) {
+                const data = await response.json();
+                // Xử lý dữ liệu nhận được, ví dụ như lưu token
+                localStorage.setItem('token', data.token); // Nếu cần lưu token
+                localStorage.setItem('accountid', data.accountid); // Lưu id người dùng
+                navigate('/home');
+            } else {
+                setErrorMessage('Đăng nhập không thành công, vui lòng kiểm tra lại tài khoản và mật khẩu.');
+            }
+        } catch (error) {
+            console.error('Lỗi đăng nhập:', error);
+            setErrorMessage('Đã xảy ra lỗi, vui lòng thử lại sau.');
         }
     };
 
@@ -26,6 +41,8 @@ const Login: React.FC = () => {
     const handleForgotPasswordClick = () => {
         navigate('/forgot-password');
     };
+
+
 
     return (
         <div className="flex flex-1 flex-col justify-center mt-1 px-6 py-12 lg:px-8">
@@ -45,18 +62,18 @@ const Login: React.FC = () => {
                 <div className="bg-white bg-opacity-70 shadow-lg border border-gray-300 rounded-lg p-6">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor="text" className="block text-sm font-medium leading-6 text-gray-900">
                                 Tài khoản
                             </label>
                             <div className="mt-2">
                                 <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
+                                    id="text"
+                                    name="text"
+                                    type="text"
                                     required
-                                    autoComplete="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    autoComplete="text"
+                                    value={username}
+                                    onChange={(e) => setusername(e.target.value)}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     placeholder="Nhập tài khoản của bạn"
                                 />
@@ -64,6 +81,7 @@ const Login: React.FC = () => {
                         </div>
 
                         <div>
+                            
                             <div className="flex items-center justify-between">
                                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                                     Mật khẩu
