@@ -11,11 +11,12 @@ import Register from './components/Register';
 import Conversations from './components/Conversations';
 import Conversations1 from './components/Conversations1';
 import Calendar from './components/Calendar';
+import DailyView from './components/DailyView';
 import TimesLive from './components/TimesLive';
 import Planning from './components/Planning';
 import TaskPage from './components/TaskPage';
 import Project from './components/Project';
-import Tasks from './components/Tasks';
+import Works from './components/Works';
 import CreateProjects from './components/CreateProjects';
 import CreateTasks from './components/CreateTasks';
 import ForgotPassword from './components/ForgotPassword';
@@ -62,7 +63,8 @@ const Layout: React.FC = () => {
                         <Route path="/project" element={<Project />} />
                         <Route path="/createProjects" element={<CreateProjects />} />
                         <Route path="/createTasks" element={<CreateTasks />} />
-                        <Route path="/tasks" element={<Tasks />} />
+                        <Route path="/works" element={<Works />} />
+                        <Route path="/dailyView/:date" element={<DailyView />} />
                     </Routes>
                 </div>
             </div>
