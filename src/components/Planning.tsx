@@ -355,7 +355,7 @@ const Planning: React.FC = () => {
                                     </button>
                                     <button
                                         onClick={() => setIsAddingList(false)}
-                                        className="text-black px-3 py-3 rounded font-bold"
+                                        className="text-white px-3 py-3 rounded font-bold"
                                     >
                                         Hủy
                                     </button>
@@ -364,7 +364,7 @@ const Planning: React.FC = () => {
                         ) : (
                             <button
                                 onClick={() => setIsAddingList(true)}
-                                className="text-black px-4 py-2 rounded mb-2 flex items-center font-bold"
+                                className="text-white px-4 py-2 rounded mb-2 flex items-center font-bold"
                             >
                                 <svg
                                     className="w-4 h-4 mr-2"

@@ -14,17 +14,14 @@ const Header = () => {
     const handleTabClick = (tab: string) => {
         setActiveTab(tab);
         switch (tab) {
-            case "Trang chủ":
-                navigate("/home");
-                break;
-            case "Hội thoại":
-                navigate("/conversations");
+            case "Công việc":
+                navigate("/taskpage");
                 break;
             case "Lịch":
                 navigate("/calendar");
                 break;
-            case "Công việc":
-                navigate("/taskpage");
+            case "+Tạo dự án mới":
+                navigate("/createProjects");
                 break;
             default:
                 navigate("/");
@@ -39,7 +36,9 @@ const Header = () => {
         navigate("/home"); // Điều hướng về trang chủ
     };
     const logout = () => {
-        navigate('/home');// Điều hướng đến trang chủ
+        localStorage.removeItem('token');
+        localStorage.removeItem('accountid');
+        navigate('/login');// Điều hướng đến trang chủ
     };
 
     // Tạo ref để theo dõi div của thông báo và dropdown, khai báo kiểu HTMLDivElement | null
@@ -87,7 +86,7 @@ const Header = () => {
         ? notifications.filter((notification) => !notification.read)
         : notifications;
 
-    const tabs = ["Các dự án","Gần đây","Công việc", "Lịch", "+Tạo tác vụ nhanh"];
+    const tabs = ["Các dự án","Gần đây","Công việc", "Lịch", "+Tạo dự án mới"];
 
     // Hook để đóng dropdown hoặc thông báo khi click ra ngoài
     useEffect(() => {
@@ -133,7 +132,7 @@ const Header = () => {
                         <ul className="flex space-x-4 mb-0 pl-0">
                             {tabs.map((tab) => (
                                 <li key={tab}>
-                                <button
+                                    <button
                                         className={`px-3 py-2 rounded-md text-sm font-medium ${
                                             activeTab === tab
                                                 ? "bg-blue-500 text-white"
@@ -260,7 +259,7 @@ const Header = () => {
                         className="md:hidden text-gray-700 hover:text-blue-500 focus:outline-none"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     >
-                    <FaBars size={24} />
+                        <FaBars size={24} />
                     </button>
                 </div>
             </div>

@@ -96,7 +96,7 @@ const Menu: React.FC<MenuProps> = ({ isMenuVisible, toggleMenu }) => {
                                 <li>
                                     <button
                                         className="flex items-center w-full py-2 px-3 hover:bg-gray-500 text-left rounded-lg"
-                                        onClick={() => handleItemClick("Task", "/tasks")}
+                                        onClick={() => handleItemClick("Works", "/works")}
                                     >
                                         <span className="text-white">Nhiệm vụ</span>
                                     </button>
