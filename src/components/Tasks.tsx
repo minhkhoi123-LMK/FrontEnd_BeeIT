@@ -13,7 +13,7 @@ const WorkTable: React.FC = () => {
     useEffect(() => {
         const token = localStorage.getItem("token");
         console.log("Token:", token); // Log để kiểm tra token có được lấy hay không
-        axios.get("http://localhost:8080/api/work/findAllWorksByTask", {
+        axios.get("http://localhost:8080/api/user/work/findAllWorksByTask", {
             headers: {
                 Authorization: `Bearer ${token}`
             }

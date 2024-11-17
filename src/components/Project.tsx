@@ -25,7 +25,7 @@ const Project: React.FC = () => {
                     return;
                 }
                 
-                const response = await axios.get("http://localhost:8080/api/project/findProjectsByOwner", {
+                const response = await axios.get("http://localhost:8080/api/user/project/findProjectsByOwner", {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
