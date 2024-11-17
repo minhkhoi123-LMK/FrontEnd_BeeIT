@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { FaEdit, FaStar, FaHeart, FaThumbsUp } from "react-icons/fa";
 import Modal from "react-modal";
-
 declare function require(context: string): {
     keys(): string[];
     (id: string): any;
